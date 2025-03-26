@@ -34,8 +34,8 @@
     </div>
 
     <script>
+        // Removed Court 1 URL as requested
         const courtUrls = {
-            1: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=1",
             2: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=2",
             3: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=3",
             4: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=4",
@@ -44,7 +44,7 @@
 
         async function fetchScores() {
             let scores = [];
-            for (let court = 1; court <= 5; court++) {
+            for (let court = 2; court <= 5; court++) {  // Starting from Court 2
                 try {
                     let url = courtUrls[court];
                     console.log(`Fetching data for Court ${court}: ${url}`);  // Log the URL being used
