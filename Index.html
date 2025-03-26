@@ -35,7 +35,83 @@
 
     <script>
         const courtUrls = {
-            2: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=2",
+            2: "<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreholio Ticker</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+        #ticker {
+            white-space: nowrap;
+            overflow: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        #tickerText {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            animation: scroll 15s linear infinite;
+        }
+        @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <div id="ticker">
+        <div id="tickerText">Loading scores...</div>
+    </div>
+
+    <script>
+        const courtUrls = {
+            2: "https://app.scoreholio.com/account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=2",
+            3: "https://app.scoreholio.com/account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=3",
+            4: "https://app.scoreholio.com/account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=4",
+            5: "https://app.scoreholio.com/account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=5"
+        };
+
+        async function fetchScores() {
+            let scores = [];
+            for (let court = 2; court <= 5; court++) {  // Start from Court 2
+                try {
+                    let url = courtUrls[court];
+                    console.log(`Fetching data for Court ${court}: ${url}`);  // Log URL being used
+
+                    let response = await fetch(url);
+                    console.log(`Response for Court ${court}: ${response.status}`);  // Log the response status
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    let text = await response.text();
+                    console.log(`Raw HTML for Court ${court}:`, text); // Log the raw HTML response
+
+                    // Only logging the raw HTML for now, not parsing the content yet
+                    scores.push(`Court ${court}: Raw HTML fetched`);
+
+                } catch (error) {
+                    console.error(`Error fetching data for Court ${court}:`, error);
+                    scores.push(`Court ${court}: Error`);
+                }
+            }
+            document.getElementById("tickerText").textContent = scores.join(" | ");
+        }
+
+        fetchScores();
+        setInterval(fetchScores, 30000); // Fetch scores every 30 seconds
+    </script>
+</body>
+</html>
+",
             3: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=3",
             4: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=4",
             5: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=5"
