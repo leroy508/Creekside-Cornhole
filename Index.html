@@ -34,7 +34,6 @@
     </div>
 
     <script>
-        // Removed Court 1 URL as requested
         const courtUrls = {
             2: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=2",
             3: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=3",
@@ -44,13 +43,13 @@
 
         async function fetchScores() {
             let scores = [];
-            for (let court = 2; court <= 5; court++) {  // Starting from Court 2
+            for (let court = 2; court <= 5; court++) {  // Start from Court 2
                 try {
                     let url = courtUrls[court];
-                    console.log(`Fetching data for Court ${court}: ${url}`);  // Log the URL being used
+                    console.log(`Fetching data for Court ${court}: ${url}`);  // Log URL being used
 
                     let response = await fetch(url);
-                    console.log(`Response for Court ${court}: ${response.status}`); // Log the response status
+                    console.log(`Response for Court ${court}: ${response.status}`);  // Log the response status
 
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -59,18 +58,9 @@
                     let text = await response.text();
                     console.log(`Raw HTML for Court ${court}:`, text); // Log the raw HTML response
 
-                    let teamMatches = text.match(/<div class="team-name">(.*?)<\/div>/g);
-                    let scoreMatches = text.match(/<div class="score">(.*?)<\/div>/g);
+                    // Only logging the raw HTML for now, not parsing the content yet
+                    scores.push(`Court ${court}: Raw HTML fetched`);
 
-                    if (teamMatches && scoreMatches && teamMatches.length >= 2 && scoreMatches.length >= 2) {
-                        let team1 = teamMatches[0].replace(/<[^>]+>/g, "").trim();
-                        let team2 = teamMatches[1].replace(/<[^>]+>/g, "").trim();
-                        let score1 = scoreMatches[0].replace(/<[^>]+>/g, "").trim();
-                        let score2 = scoreMatches[1].replace(/<[^>]+>/g, "").trim();
-                        scores.push(`Court ${court}: ${team1} ${score1} - ${team2} ${score2}`);
-                    } else {
-                        scores.push(`Court ${court}: No active game`);
-                    }
                 } catch (error) {
                     console.error(`Error fetching data for Court ${court}:`, error);
                     scores.push(`Court ${court}: Error`);
