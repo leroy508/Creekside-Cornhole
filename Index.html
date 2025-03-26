@@ -20,7 +20,7 @@
             font-size: 24px;
             font-weight: bold;
             color: white;
-            animation: scroll 10s linear infinite;
+            animation: scroll 15s linear infinite;
         }
         @keyframes scroll {
             from { transform: translateX(100%); }
@@ -34,29 +34,19 @@
     </div>
 
     <script>
-        const courtNumbers = [2, 3, 4, 5]; // Courts 1-5
-        let baseURL = "";
+        const courtUrls = {
+            1: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=1",
+            2: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=2",
+            3: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=3",
+            4: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=4",
+            5: "https://app.scoreholio.com/overlay?account=VOqPBvr36TgbZxiIXzptv091U792&game=pb3vlRfmXXtuvJCYtKBr&court=5"
+        };
 
-        // Load configuration from the config.json file
-        async function loadConfig() {
-            try {
-                let response = await fetch("config.json");
-                let config = await response.json();
-                baseURL = `https://app.scoreholio.com/overlay?account=${config.account}&game=${config.game}&court=`;
-                fetchScores();
-                setInterval(fetchScores, 30000); // Fetch scores every 30 seconds
-            } catch (error) {
-                console.error("Error loading config:", error);
-                document.getElementById("tickerText").textContent = "Error loading tournament data";
-            }
-        }
-
-        // Fetch scores from each court
         async function fetchScores() {
             let scores = [];
-            for (let court of courtNumbers) {
+            for (let court = 1; court <= 5; court++) {
                 try {
-                    let url = baseURL + court;
+                    let url = courtUrls[court];
                     console.log(`Fetching data for Court ${court}: ${url}`);  // Log the URL being used
 
                     let response = await fetch(url);
@@ -89,8 +79,8 @@
             document.getElementById("tickerText").textContent = scores.join(" | ");
         }
 
-        // Load the configuration and start the ticker
-        loadConfig();
+        fetchScores();
+        setInterval(fetchScores, 30000); // Fetch scores every 30 seconds
     </script>
 </body>
 </html>
